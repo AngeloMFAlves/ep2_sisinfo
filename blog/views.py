@@ -5,7 +5,7 @@ from django.views.generic import (
 )
 
 from .forms import PostForm, CommentForm
-from .models import Post
+from .models import Post, Category
 
 
 class PostListView(ListView):
@@ -33,6 +33,7 @@ class PostDeleteView(DeleteView):
     model = Post
     success_url = reverse_lazy('post_list')
 
+
 def comment_create(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -45,3 +46,18 @@ def comment_create(request, pk):
     else:
         form = CommentForm()
     return render(request, 'blog/comment_form.html', {'form': form, 'post': post})
+
+
+class CategoryListView(ListView):
+    model = Category
+    context_object_name = 'categories'
+
+
+def category_detail(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    posts = category.posts.all()
+    return render(
+        request,
+        'blog/post_list.html',
+        {'posts': posts, 'category': category},
+    )
