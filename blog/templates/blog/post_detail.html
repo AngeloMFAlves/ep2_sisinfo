@@ -14,4 +14,21 @@
     <a href="{% url 'post_update' post.pk %}">Editar</a> |
     <a href="{% url 'post_delete' post.pk %}">Remover</a> |
     <a href="{% url 'post_list' %}">Voltar à listagem</a>
+
+    <hr>
+    <h3>Comentários ({{ post.comments.count }})</h3>
+    <p><a href="{% url 'comment_create' post.pk %}">Comentar neste post</a></p>
+
+    {% for comment in post.comments.all %}
+        <div>
+            <p>
+                <strong>{{ comment.author }}</strong>
+                <small>em {{ comment.created_at|date:"d/m/Y H:i" }}</small>
+            </p>
+            <p>{{ comment.text|linebreaksbr }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>Nenhum comentário ainda.</p>
+    {% endfor %}
 {% endblock %}
