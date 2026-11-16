@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if post %}Editar post{% else %}Novo post{% endif %}{% endblock %}
+
+{% block content %}
+    <h2>{% if post %}Editar post{% else %}Novo post{% endif %}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="title">Título:</label><br>
+            <input type="text" id="title" name="title" maxlength="200" size="60" value="{{ post.title }}">
+        </p>
+        <p>
+            <label for="content">Conteúdo (HTML):</label><br>
+            <textarea id="content" name="content" rows="12" cols="70">{{ post.content }}</textarea>
+        </p>
+        <button type="submit">Salvar</button>
+        <a href="{% if post %}{% url 'post_detail' post.pk %}{% else %}{% url 'post_list' %}{% endif %}">Cancelar</a>
+    </form>
+{% endblock %}
